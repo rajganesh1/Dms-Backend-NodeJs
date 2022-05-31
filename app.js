@@ -5,6 +5,7 @@ const mongoose=require("mongoose");
 const fileAPI = require('./files/file_api.routes');
 const userAPI= require('./users/user_api.routes');
 const folderAPI= require('./folders/folder_api.routes');
+const homeAPI= require('./fetch_home/fetch_home_api.routes');
 
 require("dotenv/config");
 
@@ -26,7 +27,7 @@ app.use('/v1',userAPI);
 
 app.use('/v1',folderAPI);
 
-
+app.use('/v1',homeAPI)
 
 mongoose.connect(process.env.DB_CONNECTION_STRING,
     {useUnifiedTopology: true, useNewUrlParser:true}, 
