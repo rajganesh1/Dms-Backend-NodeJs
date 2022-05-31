@@ -2,6 +2,9 @@ const express =require("express");
 const app=express();
 const mongoose=require("mongoose");
 
+const fileAPI = require('./files/file_api.routes');
+//const userAPI= require('./users/user_api.routes');
+
 require("dotenv/config");
 
 
@@ -16,6 +19,10 @@ app.use(express.json());
 
 app.use(customMiddleware);
 
+app.use('/v1',fileAPI);
+
+//app.use('/v1',userAPI);
+
 
 
 mongoose.connect(process.env.DB_CONNECTION_STRING,
@@ -25,6 +32,6 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
     }
 );
 
-app.listen(4000, () => {
+app.listen(6000, () => {
     console.log("Started ...");
 })

@@ -1,10 +1,10 @@
 const mongoose=require("mongoose");
 
 const file=new mongoose.Schema({
-    ownerId:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-    }],
+    // ownerId:[{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'user',
+    // }],
     title:{
         type: String,
         required: true,
@@ -17,7 +17,7 @@ const file=new mongoose.Schema({
         type: String,
     },
     lastModified: {
-        type: Date,
+        type: String,
     }
 });
 
