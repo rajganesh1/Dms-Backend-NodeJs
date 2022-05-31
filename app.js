@@ -3,7 +3,8 @@ const app=express();
 const mongoose=require("mongoose");
 
 const fileAPI = require('./files/file_api.routes');
-//const userAPI= require('./users/user_api.routes');
+const userAPI= require('./users/user_api.routes');
+const folderAPI= require('./folders/folder_api.routes');
 
 require("dotenv/config");
 
@@ -21,7 +22,9 @@ app.use(customMiddleware);
 
 app.use('/v1',fileAPI);
 
-//app.use('/v1',userAPI);
+app.use('/v1',userAPI);
+
+app.use('/v1',folderAPI);
 
 
 

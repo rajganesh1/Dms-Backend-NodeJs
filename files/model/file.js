@@ -1,11 +1,23 @@
 const mongoose=require("mongoose");
 
 const file=new mongoose.Schema({
-    // ownerId:[{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'user',
-    // }],
-    title:{
+    id:{
+        type:String,
+        required: true,
+    },
+    name:{
+        type:String,
+        required: true,
+    },
+    folder_id:{
+        type:String,
+        required: true,
+    },
+    owner_id:{
+        type:String,
+        required: true,
+    },
+    extension:{
         type: String,
         required: true,
     },
@@ -15,9 +27,7 @@ const file=new mongoose.Schema({
     },
     createdAt:{
         type: String,
-    },
-    lastModified: {
-        type: String,
+        required: true,
     }
 });
 

@@ -4,7 +4,6 @@ const filelist=require("./model/file");
 
 route.get('/file', (req,res)=> {
     try{
-        console.log("test");
         filelist.find({}, (err, result) => {
             if (err) {
               res.send(err);
@@ -18,14 +17,25 @@ route.get('/file', (req,res)=> {
 })
 
 route.post("/file",async(req,res)=>{
-    console.log("trying to post");
     try{
         const fileList=new filelist((req.body)); 
         await fileList.save();
-        res.send("Successfully insert into db");
+        res.send("Successfully inserted file into db");
     }catch(err){
         res.send(`${err} error`);
     }
 });
 
 module.exports = route;
+
+
+
+// {
+//     "id":"101F",
+//     "name": "file number 6",
+//     "folder_id":"folder 1",
+//     "owner_id": "Raj Ganesh",
+//     "extension": ".docs",
+//     "content": "This is the sixth file created",
+//     "createdAt":"31-05-2022"
+// }
