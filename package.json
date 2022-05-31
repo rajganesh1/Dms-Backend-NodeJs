@@ -1,0 +1,24 @@
+{
+  "name": "model1",
+  "version": "1.0.0",
+  "description": "ZoomInfo assignment",
+  "main": "user.js",
+  "scripts": {
+    "test": "Node",
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "node",
+    "mongo",
+    "mongoose"
+  ],
+  "author": "Raj Ganesh R",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "mongoose": "^6.3.4",
+    "nodemon": "^2.0.16"
+  }
+}
