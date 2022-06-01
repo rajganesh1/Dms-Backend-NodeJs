@@ -6,7 +6,7 @@ const folderModel=require("../folders/model/folder");
 //will send all files in the root directory of the users 
 route.get('/home/:userid', async(req,res)=> {
     try{
-        const files = await fileModel.find({owner_id : req.params.userid, folder_id: { $exists: false}});
+        const files = await fileModel.find({owner_id : req.params.userid, folder_id: '1000'});
         const folders = await folderModel.find({owner_id : req.params.userid});
         res.send([...files, ...folders]);
     }catch(err){

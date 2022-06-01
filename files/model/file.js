@@ -11,7 +11,7 @@ const file=new mongoose.Schema({
     },
     folder_id:{
         type:String,
-        required: false,
+        required: true,
     },
     owner_id:{
         type:String,
