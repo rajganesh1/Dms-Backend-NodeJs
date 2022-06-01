@@ -16,9 +16,9 @@ route.get('/folder', (req,res)=> {
     }
 })
 
-route.post("/folder",async(req,res)=>{
+route.post("/folder",async(req,res)=>{//post folder api
     try{
-        const folderList=new folderModel((req.body)); 
+        const folderList=new folderModel((req.body)); //creatre instance for the model and save in db
         await folderList.save();
         res.send("Successfully inserted folder into db");
     }catch(err){
@@ -27,14 +27,14 @@ route.post("/folder",async(req,res)=>{
 });
 
 //moving files to another folder
-route.put("/folder",async(req,res)=>{
+route.put("/folder",(req,res)=>{//call back anony func..
     const updateFile=req.body;
     console.log("trying to update");
     try{
         fileModel.findOneAndUpdate({id:updateFile.fileId},{$set:{folder_id:updateFile.newId}},{upsert:true},
             (err,result)=>{
                 if(err){
-                    res.send(`err :${error}`);
+                    res.send(`err :${err}`);
                 }
                 else{
                     res.send("File has been moved to destination folder");
@@ -42,6 +42,21 @@ route.put("/folder",async(req,res)=>{
             })
     }catch(err){
         res.send(`${err}test error`);
+    }
+})
+
+route.delete("/folder/:userId/:folderId",(req,res)=>{
+    try{
+        folderModel.remove({owner_id:req.params.userId,id:req.params.folderId},(err,result)=>{
+            if(err){
+                res.send(`err:${err}`);
+            }
+            else{
+                res.send('folder successfully deleted');
+            }
+        });
+    }catch(err){
+        res.send(err);
     }
 })
 

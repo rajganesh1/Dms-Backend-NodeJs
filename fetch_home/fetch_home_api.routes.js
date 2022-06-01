@@ -8,7 +8,7 @@ route.get('/home/:userid', async(req,res)=> {
     try{
         const files = await fileModel.find({owner_id : req.params.userid, folder_id: '1000'});
         const folders = await folderModel.find({owner_id : req.params.userid});
-        res.send([...files, ...folders]);
+        res.send([...files, ...folders]);//spread array
     }catch(err){
         res.send(`${err}test error`);
     }

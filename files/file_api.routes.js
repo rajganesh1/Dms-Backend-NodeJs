@@ -28,6 +28,21 @@ route.post("/file",async(req,res)=>{
 
 module.exports = route;
 
+route.delete("/file/:userId/:fileId",(req,res)=>{
+    try{
+        filelist.remove({owner_id:req.params.userId,id:req.params.fileId},(err,result)=>{
+            if(err){
+                res.send(`err:${err}`);
+            }
+            else{
+                res.send('file successfully deleted');
+            }
+        });
+    }catch(err){
+        res.send(err);
+    }
+})
+
 
 
 // {

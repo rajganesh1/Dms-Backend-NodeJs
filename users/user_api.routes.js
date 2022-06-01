@@ -1,10 +1,10 @@
 const route = require('express').Router();
-const userlist=require("./model/user");
+const usermodel=require("./model/user");
 
 
 route.get('/user', (req,res)=> {
     try{
-        userlist.find({}, (err, result) => {
+        usermodel.find({}, (err, result) => {
             if (err) {
               res.send(err);
             } else {
@@ -12,19 +12,34 @@ route.get('/user', (req,res)=> {
             }
         });
     }catch(err){
-        res.send(`${err}test error`);
+        res.send(`${err} error`);
     }
 })
 
 route.post("/user",async(req,res)=>{
     try{
-        const userList=new userlist((req.body)); 
-        await userList.save();
+        const userModel=new usermodel((req.body)); 
+        await userModel.save();
         res.send("Successfully inserted user into db");
     }catch(err){
         res.send(`${err} error`);
     }
 });
+
+route.delete("/user/:userId",(req,res)=>{
+    try{
+        usermodel.remove({id:req.params.userId},(err,result)=>{
+            if(err){
+                res.send(`err:${err}`);
+            }
+            else{
+                res.send('user successfully deleted');
+            }
+        });
+    }catch(err){
+        res.send(err);
+    }
+})
 
 module.exports = route;
 
