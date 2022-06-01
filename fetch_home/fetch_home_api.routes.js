@@ -1,6 +1,7 @@
 const route = require('express').Router();
 const fileModel=require("../files/model/file");
 const folderModel=require("../folders/model/folder");
+const userModel=require("../users/model/user");
 
 
 //will send all files in the root directory of the users 
@@ -21,8 +22,10 @@ route.get('/home/:userid/:folderid', async(req,res)=> {
         const files = await fileModel.find({owner_id : req.params.userid,folder_id : req.params.folderid});
         res.send(files);
     }catch(err){
-        res.send(`${err}test error`);
+        res.send(`${err} error`);
     }
 })
+
+
 
 module.exports=route;
