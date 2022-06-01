@@ -45,7 +45,7 @@ route.delete("/user/:userId",(req,res)=>{
 route.get('/login/:emailId/:password',async(req,res)=>{
     try{
         const userID=await usermodel.findOne({email:req.params.emailId,password:req.params.password});
-        res.send(userID.id);
+        res.send({ id: userID.id});
     }catch(err){
         res.send(`${err} error`);
     }
