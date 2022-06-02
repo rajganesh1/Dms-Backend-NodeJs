@@ -1,6 +1,8 @@
 const route = require('express').Router();
 const filelist=require("./model/file");
+const auth = require("../auth.service");
 
+route.use('/file/:userID/:folderID', auth.authenticateToken);
 
 route.get('/file/:userID/:folderID', (req,res)=> {
     try{
@@ -16,6 +18,8 @@ route.get('/file/:userID/:folderID', (req,res)=> {
     }
 })
 
+route.use('/file', auth.authenticateToken);
+
 route.post("/file",async(req,res)=>{
     try{
         const fileList=new filelist((req.body)); 
@@ -26,7 +30,7 @@ route.post("/file",async(req,res)=>{
     }
 });
 
-
+route.use('/file/:userId/:fileId', auth.authenticateToken);
 
 route.delete("/file/:userId/:fileId",(req,res)=>{
     try{

@@ -1,6 +1,9 @@
 const route = require('express').Router();
 const folderModel=require("./model/folder");
 const fileModel=require("../files/model/file");
+const auth = require("../auth.service");
+
+route.use('/folder/:userID', auth.authenticateToken);
 
 route.get('/folder/:userID', (req,res)=> {
     try{
@@ -16,6 +19,8 @@ route.get('/folder/:userID', (req,res)=> {
     }
 })
 
+route.use('/folder', auth.authenticateToken);
+
 route.post("/folder",async(req,res)=>{
     try{
         if(req.body.owner_id == undefined){
@@ -28,6 +33,8 @@ route.post("/folder",async(req,res)=>{
         res.send(`${err} error`);
     }
 });
+
+route.use('/folder', auth.authenticateToken);
 
 //moving files to another folder
 route.put("/folder",(req,res)=>{
@@ -46,6 +53,8 @@ route.put("/folder",(req,res)=>{
         res.send(`${err}test error`);
     }
 })
+
+route.use('/folder/:userID/:folderID', auth.authenticateToken);
 
 route.delete("/folder/:userId/:folderId",(req,res)=>{
     try{

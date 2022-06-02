@@ -3,7 +3,8 @@ const route = require('express').Router();
 const usermodel=require("./model/user");
 const bcrypt=require('bcrypt');
 const saltRounds=10;
-
+const jwt=require('jsonwebtoken');
+const auth = require("../auth.service");
 
 route.post("/create-user",async(req,res)=>{
     try{
@@ -18,6 +19,8 @@ route.post("/create-user",async(req,res)=>{
     }
 });
 
+route.use('/user/:userID', auth.authenticateToken);
+
 route.delete("/user/:userId",(req,res)=>{
     try{
         usermodel.remove({id:req.params.userId},(err,result)=>{
@@ -28,7 +31,7 @@ route.delete("/user/:userId",(req,res)=>{
                 res.send('user successfully deleted');
             }
         });
-    }catch(err){
+    }catch(err){ 
         res.send(err);
     }
 })
@@ -43,7 +46,10 @@ route.get('/login/:emailId/:password',async(req,res)=>{
             res.sendStatus(403);
         }
         else{
-            res.send({ id: dbpass.id});
+            const emailID = req.params.email;
+            const email = {email: emailID}
+            const accessToken=jwt.sign(email,process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60s' });
+            res.json({ id: dbpass.id, accessToken:accessToken});
         }
     }catch(err){
         res.send(`${err} error`);
