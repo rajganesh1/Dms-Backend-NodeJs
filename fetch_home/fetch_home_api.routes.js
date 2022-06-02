@@ -9,7 +9,8 @@ route.get('/home/:userid', async(req,res)=> {
     try{
         const files = await fileModel.find({owner_id : req.params.userid, folder_id: '1000'});
         const folders = await folderModel.find({owner_id : req.params.userid});
-        res.send([...files, ...folders]);//spread array
+        console.log(...files); [1,2,3,4] 
+        res.send([...files, ...folders]);//merge 2 array into 1 final spreaded array
     }catch(err){
         res.send(`${err}test error`);
     }

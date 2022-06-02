@@ -2,9 +2,9 @@ const route = require('express').Router();
 const filelist=require("./model/file");
 
 
-route.get('/file', (req,res)=> {
+route.get('/file/:userID/:folderID', (req,res)=> {
     try{
-        filelist.find({}, (err, result) => {
+        filelist.find({owner_id:req.params.userID,folder_id:req.params.folderID}, (err, result) => {
             if (err) {
               res.send(err);
             } else {
@@ -26,7 +26,7 @@ route.post("/file",async(req,res)=>{
     }
 });
 
-module.exports = route;
+
 
 route.delete("/file/:userId/:fileId",(req,res)=>{
     try{
@@ -43,7 +43,7 @@ route.delete("/file/:userId/:fileId",(req,res)=>{
     }
 })
 
-
+module.exports = route;
 
 // {
 //     "id":"5005",

@@ -2,9 +2,9 @@ const route = require('express').Router();
 const folderModel=require("./model/folder");
 const fileModel=require("../files/model/file");
 
-route.get('/folder', (req,res)=> {
+route.get('/folder/:userID', (req,res)=> {
     try{
-        folderModel.find({}, (err, result) => {
+        folderModel.find({id:req.params.userID}, (err, result) => {
             if (err) {
               res.send(err);
             } else {
@@ -16,9 +16,12 @@ route.get('/folder', (req,res)=> {
     }
 })
 
-route.post("/folder",async(req,res)=>{//post folder api
+route.post("/folder",async(req,res)=>{
     try{
-        const folderList=new folderModel((req.body)); //creatre instance for the model and save in db
+        if(req.body.owner_id == undefined){
+            res.send(`${err} OwnerID missing`);
+        }
+        const folderList=new folderModel((req.body)); 
         await folderList.save();
         res.send("Successfully inserted folder into db");
     }catch(err){
@@ -27,9 +30,8 @@ route.post("/folder",async(req,res)=>{//post folder api
 });
 
 //moving files to another folder
-route.put("/folder",(req,res)=>{//call back anony func..
+route.put("/folder",(req,res)=>{
     const updateFile=req.body;
-    console.log("trying to update");
     try{
         fileModel.findOneAndUpdate({id:updateFile.fileId},{$set:{folder_id:updateFile.newId}},{upsert:true},
             (err,result)=>{

@@ -1,23 +1,15 @@
+const Uuid = require('uuid');
 const route = require('express').Router();
 const usermodel=require("./model/user");
+const bcrypt=require('bcrypt');
+const saltRounds=10;
 
 
-route.get('/user', (req,res)=> {
+route.post("/create-user",async(req,res)=>{
     try{
-        usermodel.find({}, (err, result) => {
-            if (err) {
-              res.send(err);
-            } else {
-              res.send(result);
-            }
-        });
-    }catch(err){
-        res.send(`${err} error`);
-    }
-})
-
-route.post("/user",async(req,res)=>{
-    try{
+        const uuidv4=Uuid.v4();
+        req.body.id=uuidv4;
+        req.body.password = bcrypt.hashSync(req.body.password, saltRounds);
         const userModel=new usermodel((req.body)); 
         await userModel.save();
         res.send("Successfully inserted user into db");
@@ -41,11 +33,18 @@ route.delete("/user/:userId",(req,res)=>{
     }
 })
 
+
 //user login
 route.get('/login/:emailId/:password',async(req,res)=>{
     try{
-        const userID=await usermodel.findOne({email:req.params.emailId,password:req.params.password});
-        res.send({ id: userID.id});
+        const dbpass = await usermodel.findOne({email:req.params.emailId});
+        const isValid = await bcrypt.compare(req.params.password, dbpass.password);
+        if(!isValid){
+            res.sendStatus(403);
+        }
+        else{
+            res.send({ id: dbpass.id});
+        }
     }catch(err){
         res.send(`${err} error`);
     }
