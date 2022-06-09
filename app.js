@@ -9,13 +9,26 @@ const homeAPI= require('./fetch_home/fetch_home_api.routes');
 
 require("dotenv/config");
 
-
 function customMiddleware(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     console.log("Welcome to my middleware");
     next();
 }
+
+app.all('*', function(req, res,next) {
+    let responseSettings = {
+        "AccessControlAllowOrigin": req.headers.origin,
+        "AccessControlAllowHeaders": "Content-Type,X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5,  Date, X-Api-Version, X-File-Name",
+        "AccessControlAllowMethods": "POST, GET, PUT, DELETE, OPTIONS",
+        "AccessControlAllowCredentials": true
+    };
+
+    res.header("Access-Control-Allow-Credentials", responseSettings.AccessControlAllowCredentials);
+    res.header("Access-Control-Allow-Origin",  responseSettings.AccessControlAllowOrigin);
+    res.header("Access-Control-Allow-Headers", (req.headers['access-control-request-headers']) ? req.headers['access-control-request-headers'] : "x-requested-with");
+    res.header("Access-Control-Allow-Methods", (req.headers['access-control-request-method']) ? req.headers['access-control-request-method'] : responseSettings.AccessControlAllowMethods);
+
+    next();
+});
 
 app.use(express.json());
 
@@ -36,6 +49,7 @@ mongoose.connect(process.env.DB_CONNECTION_STRING,
     }
 );
 
-app.listen(6000, () => {
+app.listen(6002, () => {
     console.log("Started ...");
 })
+    
