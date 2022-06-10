@@ -48,7 +48,7 @@ route.get('/login/:emailId/:password',async(req,res)=>{
         else{
             const emailID = req.params.email;
             const email = {email: emailID}
-            const accessToken=jwt.sign(email,process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60s' });
+            const accessToken=jwt.sign(email,process.env.ACCESS_TOKEN_SECRET, { expiresIn: '6000s' });
             res.json({ id: dbpass.id, accessToken:accessToken});
         }
     }catch(err){
