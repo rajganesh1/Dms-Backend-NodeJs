@@ -28,7 +28,7 @@ app.all('*', function(req, res,next) {
     res.header("Access-Control-Allow-Methods", (req.headers['access-control-request-method']) ? req.headers['access-control-request-method'] : responseSettings.AccessControlAllowMethods);
 
     if('OPTIONS' == req.method){
-        res.send(200);
+        res.sendStatus(200);
     }
     else{
         next();

@@ -30,18 +30,18 @@ route.post("/file",async(req,res)=>{
     }
 });
 
-route.use('/file/:userId/:fileId', auth.authenticateToken);
+route.use('/delete-file', auth.authenticateToken);
 
-route.delete("/file/:userId/:fileId",(req,res)=>{
+
+route.delete("/delete-file",async (req,res)=>{
     try{
-        filelist.remove({owner_id:req.params.userId,id:req.params.fileId},(err,result)=>{
-            if(err){
-                res.send(`err:${err}`);
-            }
-            else{
-                res.send('file successfully deleted');
-            }
-        });
+       const result= await filelist.deleteOne({id:req.body.id, owner_id:req.body.user_id});
+       if(result.deletedCount >0){
+           res.send("deleted file from db");
+       }
+       else{
+           res.send("unable to delete");
+       }
     }catch(err){
         res.send(err);
     }

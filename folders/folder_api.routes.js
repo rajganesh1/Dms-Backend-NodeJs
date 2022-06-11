@@ -54,18 +54,17 @@ route.put("/folder",(req,res)=>{
     }
 })
 
-route.use('/folder/:userID/:folderID', auth.authenticateToken);
+route.use('/delete-folder', auth.authenticateToken);
 
-route.delete("/folder/:userId/:folderId",(req,res)=>{
+route.delete("/delete-folder",async (req,res)=>{
     try{
-        folderModel.remove({owner_id:req.params.userId,id:req.params.folderId},(err,result)=>{
-            if(err){
-                res.send(`err:${err}`);
-            }
-            else{
-                res.send('folder successfully deleted');
-            }
-        });
+       const result= await folderModel.deleteOne({id:req.body.id, owner_id:req.body.user_id});
+       if(result.deletedCount >0){
+           res.send("deleted folder from db");
+       }
+       else{
+           res.send("unable to delete");
+       }
     }catch(err){
         res.send(err);
     }
@@ -77,7 +76,7 @@ module.exports = route;
 
 
 // {
-//     "id":"folder 1",
+//     "id":"1000",
 //     "name": "myFolder",
 //     "owner_id":"Raj Ganesh",
 //     "createdAt":"31-05-2022"
