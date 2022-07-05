@@ -16,4 +16,7 @@ function authenticateToken(req,res,next) {
     })
 }
 
+
+//This is the middleware function for auth token
+
 module.exports =  { authenticateToken }
